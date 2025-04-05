@@ -8,15 +8,22 @@ import {CSSTransition, TransitionGroup} from "react-transition-group";
 import {useSortAndSearchPosts} from "../hooks/usePosts.js";
 import {PostService} from "../API/PostService.js";
 import {useFetching} from "../hooks/useFetching.js";
+import {getTotalPages} from "../utils/pages.js";
+import {Pagination} from "./Pagination";
 
 
 const PostList = () => {
     const [posts, setPosts] = useState([])
     const [filter, setFilter] = useState({query: '', sort: ''});
     const [visible, setVisible] = useState(false);
-    const [fetchData,isLoading,error] = useFetching(async () => {
-        const posts = await PostService.getAll()
-        setPosts(posts)
+    const [totalPages, setTotalPages] = useState(0)
+    const limit = 10
+    const [page, setPage] = useState(1)
+    const [fetchData, isLoading, error] = useFetching(async () => {
+        const res = await PostService.getPosts(limit, page);
+        setTotalPages(getTotalPages(res.totalCount, limit));
+        setPosts(res.data);
+        console.log(res.data)
     })
     const nodesRef = useRef({});
     const searchAndSortedPosts = useSortAndSearchPosts(posts, filter.sort, filter.query);
@@ -33,38 +40,40 @@ const PostList = () => {
 
     useEffect(() => {
         fetchData().then(r => console.log(r))
-    }, [])
+    }, [page])
 
     return (<div>
-            <MyButton style={{marginTop: '1rem'}} onClick={() => setVisible(true)}>
-                Создать пост
-            </MyButton>
-            <MyModal visible={visible} setVisible={setVisible}>
-                <PostForm createPost={addNewPost}/>
-            </MyModal>
-            <PostFilter filter={filter} setFilter={setFilter}/>
-            <h1 style={{textAlign: 'center'}}>{headerText}</h1>
+        <MyButton style={{marginTop: '1rem'}} onClick={() => setVisible(true)}>
+            Создать пост
+        </MyButton>
+        <MyModal visible={visible} setVisible={setVisible}>
+            <PostForm createPost={addNewPost}/>
+        </MyModal>
+        <PostFilter filter={filter} setFilter={setFilter}/>
+        <h1 style={{textAlign: 'center'}}>{headerText}</h1>
         {error && <p>{error}</p>}
-            <TransitionGroup>
-                {searchAndSortedPosts.map((post, index) => {
+        <TransitionGroup>
+            {searchAndSortedPosts.map(post => {
 
-                    if (!nodesRef.current[post.id]) {
-                        nodesRef.current[post.id] = React.createRef();
-                    }
+                if (!nodesRef.current[post.id]) {
+                    nodesRef.current[post.id] = React.createRef();
+                }
 
-                    return (<CSSTransition
-                            key={post.id}
-                            nodeRef={nodesRef.current[post.id]}
-                            timeout={500}
-                            classNames="post"
-                        >
-                            <div ref={nodesRef.current[post.id]}>
-                                <PostItem post={post} i={index + 1} remove={removePost}/>
-                            </div>
-                        </CSSTransition>);
-                })}
-            </TransitionGroup>
-        </div>);
+                return (<CSSTransition
+                    key={post.id}
+                    nodeRef={nodesRef.current[post.id]}
+                    timeout={500}
+                    classNames="post"
+                >
+                    <div ref={nodesRef.current[post.id]}>
+                        <PostItem post={post} remove={removePost}/>
+                    </div>
+                </CSSTransition>);
+            })}
+        </TransitionGroup>
+        <Pagination onChange={setPage} page={page} totalPages={totalPages} />
+
+    </div>);
 };
 
 export default PostList;

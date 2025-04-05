@@ -168,3 +168,27 @@ button:hover {
   transform: translateX(-350px);
   transition: all 500ms ease-in;
 }
+
+.paginator {
+  display: flex;
+  cursor: pointer;
+  color: #0056b3;
+  justify-content: center;
+  font-size: 18px;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.page {
+  cursor: pointer;
+  padding: 5px 10px;
+  margin: 0 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.page.active {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
