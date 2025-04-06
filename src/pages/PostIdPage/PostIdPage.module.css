@@ -1,0 +1,34 @@
+.post_id_page {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.post_title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.post_description {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 2rem;
+}
+
+.comments_block {
+    border-top: 1px solid #ddd;
+    padding-top: 1.5rem;
+    margin-top: 2rem;
+}
+
+.comments_block h2 {
+    font-size: 1.3rem;
+    color: #222;
+    margin-bottom: 1rem;
+}

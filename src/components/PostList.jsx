@@ -3,7 +3,7 @@ import PostItem from "./PostItem.jsx";
 import PostForm from "./PostForm.jsx";
 import PostFilter from "./PostFilter.jsx";
 import MyModal from "./UI/MyModal/MyModal.jsx";
-import MyButton from "./UI/MyButton.jsx";
+import MyButton from "./UI/MyButton/MyButton.jsx";
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 import {useSortAndSearchPosts} from "../hooks/usePosts.js";
 import {PostService} from "../API/PostService.js";
@@ -23,7 +23,6 @@ const PostList = () => {
         const res = await PostService.getPosts(limit, page);
         setTotalPages(getTotalPages(res.totalCount, limit));
         setPosts(res.data);
-        console.log(res.data)
     })
     const nodesRef = useRef({});
     const searchAndSortedPosts = useSortAndSearchPosts(posts, filter.sort, filter.query);
@@ -39,7 +38,7 @@ const PostList = () => {
     };
 
     useEffect(() => {
-        fetchData().then(r => console.log(r))
+        fetchData().then(undefined)
     }, [page])
 
     return (<div>

@@ -13,4 +13,19 @@ export class PostService {
             totalCount: response.headers['x-total-count'] ?? 100,
         };
     }
+
+    static async getPostId(id){
+        const response = await axios.get('https://jsonplaceholder.typicode.com/posts/' + id)
+        return {
+            post: response.data,
+            headers: response.headers
+
+        }
+    }
+
+    static async getPostCommentsId(id){
+        const response = await axios.get(`https://jsonplaceholder.typicode.com/comments?postId=${id}`)
+        return response.data
+    }
 }
+

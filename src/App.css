@@ -168,7 +168,6 @@ button:hover {
   transform: translateX(-350px);
   transition: all 500ms ease-in;
 }
-
 .paginator {
   display: flex;
   cursor: pointer;
@@ -178,7 +177,6 @@ button:hover {
   gap: 10px;
   margin-bottom: 20px;
 }
-
 .page {
   cursor: pointer;
   padding: 5px 10px;
@@ -186,9 +184,41 @@ button:hover {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-
 .page.active {
   background-color: #007bff;
   color: white;
   font-weight: bold;
+}
+
+.navigator {
+  margin: 15px 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.post_comment_wrapper {
+  background-color: #f9f9f9;
+  border-left: 4px solid #4caf50;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  font-family: sans-serif;
+}
+
+.post_comment_name {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.post_comment_email {
+  color: #555;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+.post_comment_body {
+  color: #444;
+  line-height: 1.5;
 }

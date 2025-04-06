@@ -1,0 +1,11 @@
+.link {
+    color: gray;
+    text-decoration: none;
+    padding: 4px 8px;
+}
+
+.link.active {
+    color: tomato;
+    font-weight: bold;
+    border-bottom: 2px solid tomato;
+}

@@ -1,18 +1,19 @@
-
 import './App.css'
-import PostList from "./components/PostList.jsx";
+import AppRouter from "./routes/AppRouter.jsx";
+import {BrowserRouter} from "react-router-dom";
+import Navigation from "./components/Navigation.jsx";
 
 function App() {
 
 
-  return (
-    <>
-      <div className="container">
-          <PostList />
-      </div>
-
-    </>
-  )
+    return (
+        <BrowserRouter >
+            <div className="container">
+            <Navigation />
+            <AppRouter />
+            </div>
+        </BrowserRouter>
+    )
 }
 
 export default App
