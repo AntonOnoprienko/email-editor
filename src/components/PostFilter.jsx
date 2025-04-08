@@ -22,6 +22,7 @@ const PostFilter = ({filter, setFilter}) => {
                 className={'my-input'}
                 type={'text'}
                 value={filter.query}
+                placeholder={'Поиск...'}
                 onChange={e => setFilter({...filter,query: e.target.value})}
             />
         </div>

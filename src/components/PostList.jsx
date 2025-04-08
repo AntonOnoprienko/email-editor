@@ -10,6 +10,7 @@ import {PostService} from "../API/PostService.js";
 import {useFetching} from "../hooks/useFetching.js";
 import {getTotalPages} from "../utils/pages.js";
 import {Pagination} from "./Pagination";
+import MySelect from "./UI/MySelect/MySelect.jsx";
 
 
 const PostList = () => {
@@ -17,7 +18,7 @@ const PostList = () => {
     const [filter, setFilter] = useState({query: '', sort: ''});
     const [visible, setVisible] = useState(false);
     const [totalPages, setTotalPages] = useState(0)
-    const limit = 10
+    const [limit,setLimit] = useState(10)
     const [page, setPage] = useState(1)
     const [fetchData, isLoading, error] = useFetching(async () => {
         const res = await PostService.getPosts(limit, page);
@@ -27,7 +28,12 @@ const PostList = () => {
     const nodesRef = useRef({});
     const searchAndSortedPosts = useSortAndSearchPosts(posts, filter.sort, filter.query);
     const headerText = isLoading ? 'Идёт загрузка данных....' : searchAndSortedPosts.length ? 'Список постов' : 'Посты не найдены';
-
+    const options = [
+        { name: '5', value: 5 },
+        { name: '10', value: 10 },
+        { name: '20', value: 20 },
+        { name: 'показать все', value: -1 }
+    ];
     const addNewPost = (newPost) => {
         setPosts([...posts, {...newPost, id: Date.now()}]);
         setVisible(false);
@@ -39,7 +45,7 @@ const PostList = () => {
 
     useEffect(() => {
         fetchData().then(undefined)
-    }, [page])
+    }, [page, limit])
 
     return (<div>
         <MyButton style={{marginTop: '1rem'}} onClick={() => setVisible(true)}>
@@ -49,7 +55,10 @@ const PostList = () => {
             <PostForm createPost={addNewPost}/>
         </MyModal>
         <PostFilter filter={filter} setFilter={setFilter}/>
+        <MySelect options={options} defaultValue={'Выбрать лимит постов'} value={limit} onChange={setLimit} />
+
         <h1 style={{textAlign: 'center'}}>{headerText}</h1>
+
         {error && <p>{error}</p>}
         <TransitionGroup>
             {searchAndSortedPosts.map(post => {

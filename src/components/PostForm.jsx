@@ -20,10 +20,10 @@ const PostForm = ({createPost,removePost}) => {
 
     return (
         <form>
-            <MyInput placeholder={'Название'} value={post.title} onChange={(e) => {
+            <MyInput placeholder={'Название'} value={post.title} type={'text'} onChange={(e) => {
                 setPost({...post, title: e.target.value})
             }}/>
-            <MyInput placeholder={'Описание'} value={post.body} onChange={(e) => {
+            <MyInput placeholder={'Описание'} value={post.body} type={'text'} onChange={(e) => {
                 setPost({...post, body: e.target.value})
             }}/>
             <MyButton onClick={addNewPost}>Добавить пост</MyButton>
