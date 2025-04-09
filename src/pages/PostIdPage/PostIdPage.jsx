@@ -23,7 +23,6 @@ const PostIdPage = () => {
     useEffect(() => {
         fetchData().then(undefined);
         fetchComments().then(undefined);
-        if(post)console.log(post)
     }, []);
 
     return (

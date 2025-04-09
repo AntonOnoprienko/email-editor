@@ -11,6 +11,7 @@ import {useFetching} from "../hooks/useFetching.js";
 import {getTotalPages} from "../utils/pages.js";
 import {Pagination} from "./Pagination";
 import MySelect from "./UI/MySelect/MySelect.jsx";
+import {useObserver} from "../hooks/useObserver.js";
 
 
 const PostList = () => {
@@ -23,17 +24,19 @@ const PostList = () => {
     const [fetchData, isLoading, error] = useFetching(async () => {
         const res = await PostService.getPosts(limit, page);
         setTotalPages(getTotalPages(res.totalCount, limit));
-        setPosts(res.data);
+        setPosts([...posts,...res.data]);
     })
     const nodesRef = useRef({});
     const searchAndSortedPosts = useSortAndSearchPosts(posts, filter.sort, filter.query);
     const headerText = isLoading ? 'Идёт загрузка данных....' : searchAndSortedPosts.length ? 'Список постов' : 'Посты не найдены';
     const options = [
-        { name: '5', value: 5 },
         { name: '10', value: 10 },
         { name: '20', value: 20 },
+        { name: '30', value: 30 },
         { name: 'показать все', value: -1 }
     ];
+    const lastElement = useRef(null)
+
     const addNewPost = (newPost) => {
         setPosts([...posts, {...newPost, id: Date.now()}]);
         setVisible(false);
@@ -42,10 +45,14 @@ const PostList = () => {
     const removePost = (post) => {
         setPosts(posts.filter(p => p.id !== post.id));
     };
-
+    useObserver(lastElement,page < totalPages, isLoading, ()=>{
+        setPage(prev => prev +1)
+    })
     useEffect(() => {
         fetchData().then(undefined)
     }, [page, limit])
+
+
 
     return (<div>
         <MyButton style={{marginTop: '1rem'}} onClick={() => setVisible(true)}>
@@ -78,7 +85,9 @@ const PostList = () => {
                     </div>
                 </CSSTransition>);
             })}
+
         </TransitionGroup>
+        <div style={{height: '2px',marginTop: '1rem', marginBottom: '1rem', backgroundColor: 'grey'}} ref={lastElement}></div>
         <Pagination onChange={setPage} page={page} totalPages={totalPages} />
 
     </div>);
